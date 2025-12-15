@@ -57,6 +57,10 @@ export interface Task {
    * Optional numeric position for drag-and-drop (for p2p sync)
    */
   position?: number;
+  /**
+   * freelancer related
+   */
+  compensation?: Money;
 }
 
 /**
@@ -93,3 +97,7 @@ export interface AppSettings {
 
 export type SortOption = "dateCreated" | "dueDate" | "alphabetical" | "custom";
 export type ReduceMotionOption = "system" | "on" | "off";
+export type Money = {
+  amount: number;
+  currency: "CNY" | "USD";
+};
