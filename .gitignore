@@ -29,4 +29,4 @@ dev-dist
 # Vite cache
 /.cache
 
-./screenshots
+/screenshots
