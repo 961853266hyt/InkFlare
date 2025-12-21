@@ -127,6 +127,10 @@ export const TaskDescription = styled.div<{ done: boolean }>`
   word-break: break-word;
 `;
 
+export const TaskCommissionFee = styled.span`
+  font-size: 20px;
+`;
+
 export const NoTasks = styled.div`
   text-align: center;
   position: absolute;

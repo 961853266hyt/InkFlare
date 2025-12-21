@@ -22,6 +22,7 @@ import { useTheme } from "@emotion/react";
 import { ColorPalette } from "../../theme/themeConfig";
 import { CategorySelect } from "../CategorySelect";
 import set from "lodash/set";
+import { isValidAmountNumber } from "../../utils/taskUtils.ts";
 
 const DEFAULT_EDIT_TASK_SUBTITLE = "Edit the details of the task.";
 
@@ -50,6 +51,13 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
       editedTask?.description ? editedTask.description.length > DESCRIPTION_MAX_LENGTH : undefined,
     [editedTask?.description],
   );
+  const commissionAmountError = useMemo(() => {
+    const amount = editedTask?.commissionFee?.amount;
+
+    if (amount == null) return undefined;
+
+    return !isValidAmountNumber(amount);
+  }, [editedTask?.commissionFee?.amount]);
 
   // Effect hook to update the editedTask with the selected emoji.
   useEffect(() => {
@@ -87,7 +95,7 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
   // Event handler for saving the edited task.
   const handleSave = () => {
     document.body.style.overflow = "auto";
-    if (editedTask && !nameError && !descriptionError) {
+    if (editedTask && !nameError && !descriptionError && !commissionAmountError) {
       const updatedTasks = user.tasks.map((task) => {
         if (task.id === editedTask.id) {
           return {
@@ -220,7 +228,7 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
           value={editedTask?.commissionFee?.amount || 0}
           onChange={handleInputChange}
           // TODO: geli error handle
-          // error={descriptionError !== ""}
+          error={commissionAmountError}
           // helpercolor={descriptionError && ColorPalette.red}
           // helperText={
           //   description === ""
@@ -329,6 +337,7 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
             editedTask?.name === "" ||
             descriptionError ||
             nameError ||
+            commissionAmountError ||
             JSON.stringify(editedTask) === JSON.stringify(task)
           }
         >

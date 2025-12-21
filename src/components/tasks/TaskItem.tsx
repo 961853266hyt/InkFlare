@@ -21,6 +21,7 @@ import {
   SharedByContainer,
   TaskActionsContainer,
   DragHandle,
+  TaskCommissionFee,
 } from "./tasks.styled";
 import { calculateDateDifference, formatDate, getFontColor, systemInfo } from "../../utils";
 import { RenderTaskDescription } from "./RenderTaskDescription";
@@ -29,6 +30,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { TaskContext } from "../../contexts/TaskContext";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { getCommissionFeeString } from "../../utils/taskUtils.ts";
 
 interface TaskItemProps {
   task: Task;
@@ -166,6 +168,7 @@ export const TaskItem = memo(
           )}
           <TaskHeader>
             <TaskName done={task.done}>{textHighlighter(task.name)}</TaskName>
+
             <Tooltip
               title={
                 moveMode && enableMoveMode
@@ -188,7 +191,7 @@ export const TaskItem = memo(
               enableMoreButton={!!actions}
             />
           </TaskDescription>
-
+          <TaskCommissionFee>{getCommissionFeeString(task)}</TaskCommissionFee>
           {task.deadline && (
             <Tooltip
               title={

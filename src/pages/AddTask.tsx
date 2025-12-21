@@ -121,6 +121,7 @@ const AddTask = () => {
       pinned: false,
       name,
       description: description !== "" ? description : undefined,
+      commissionFee: commissionFee,
       emoji: emoji ? emoji : undefined,
       color,
       date: new Date(),
