@@ -16,3 +16,4 @@ export {
   optimizeProfilePicture,
   ALLOWED_PFP_TYPES,
 } from "./profilePictureStorage";
+export { isCommission } from "./TaskUtils.ts";
