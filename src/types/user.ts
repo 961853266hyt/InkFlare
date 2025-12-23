@@ -82,10 +82,13 @@ export interface Category {
   lastSave?: Date;
 }
 
+export type Language = "en" | "zh-CN";
+
 /**
  * Represents application settings for the user.
  */
 export interface AppSettings {
+  language: Language;
   enableCategories: boolean;
   doneToBottom: boolean;
   enableGlow: boolean;

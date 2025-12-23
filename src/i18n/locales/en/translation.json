@@ -1,0 +1,10 @@
+{
+  "App Badge": "App Badge",
+  "Completed Tasks at Bottom": "Completed Tasks at Bottom",
+  "Display a progress bar at the top of the screen to visualize your task completion.": "Display a progress bar at the top of the screen to visualize your task completion.",
+  "enableCategories": "enableCategories",
+  "Move completed tasks to the bottom of the list to keep your active tasks more visible.": "Move completed tasks to the bottom of the list to keep your active tasks more visible.",
+  "Show a badge on the PWA icon to indicate the number of not done tasks.": "Show a badge on the PWA icon to indicate the number of not done tasks.",
+  "Show Progress Bar": "Show Progress Bar",
+  "This feature requires the app to be installed as a PWA and supported by your browser.": "This feature requires the app to be installed as a PWA and supported by your browser."
+}
