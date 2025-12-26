@@ -19,6 +19,10 @@ const DEV_ENABLE_PWA = false;
 // https://vitejs.dev/config/
 export default defineConfig({
   cacheDir: ".cache/vite",
+  server: {
+    port: 3000,
+    open: true,
+  },
   optimizeDeps: {
     include: ["react", "react-dom", "@emotion/react", "@emotion/styled"],
     esbuildOptions: {
