@@ -61,6 +61,7 @@ export default defineConfig({
     dedupe: ["react", "react-dom", "@emotion/react"],
   },
   build: {
+    sourcemap: true,
     rollupOptions: {
       onwarn(warning, warn) {
         if (
