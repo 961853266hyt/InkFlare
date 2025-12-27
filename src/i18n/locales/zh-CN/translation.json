@@ -3,7 +3,11 @@
   "Completed Tasks at Bottom": "将已完成的任务置底",
   "Display a progress bar at the top of the screen to visualize your task completion.": "在屏幕顶部显示进度条，用于展示你的任务完成情况。",
   "enableCategories": "启用标签",
+  "Invalid settings tab: \"{{slug}}\". Redirecting to default tab.": "无效的标签页：\"{{slug}}\"。跳转到默认的标签页。",
+  "Manage Your settings and preferences": "管理您的设置和偏好",
   "Move completed tasks to the bottom of the list to keep your active tasks more visible.": "将已完成的任务移动到列表底部，让正在进行的任务更加醒目。",
+  "Settings": "设置",
+  "Settings tabs": "设置标签",
   "Show a badge on the PWA icon to indicate the number of not done tasks.": "在 PWA 应用图标上显示角标，提示未完成任务的数量。",
   "Show Progress Bar": "显示进度条",
   "This feature requires the app to be installed as a PWA and supported by your browser.": "此功能需要将应用安装为 PWA，且你的浏览器需支持该功能。"

@@ -39,6 +39,7 @@ import {
   StyledTabPanel,
   TabHeading,
 } from "./settings.styled";
+import { useTranslation } from "react-i18next";
 
 const settingsTabs: {
   label: string;
@@ -111,6 +112,7 @@ interface SettingsProps {
 export const SettingsDialog = ({ open, onClose, handleOpen }: SettingsProps) => {
   const { user } = useContext(UserContext);
   const [tabValue, setTabValue] = useState<number>(0);
+  const { t } = useTranslation();
 
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -161,9 +163,14 @@ export const SettingsDialog = ({ open, onClose, handleOpen }: SettingsProps) => 
     } else {
       const invalidSlug = hash.match(/^#settings\/(\w+)/)?.[1];
       if (invalidSlug) {
-        showToast(`Invalid settings tab: "${invalidSlug}". Redirecting to default tab.`, {
-          type: "warning",
-        });
+        showToast(
+          t('Invalid settings tab: "{{slug}}". Redirecting to default tab.', {
+            slug: invalidSlug,
+          }),
+          {
+            type: "warning",
+          },
+        );
         replaceWithTab(0);
         setTabValue(0);
       }
@@ -269,8 +276,8 @@ export const SettingsDialog = ({ open, onClose, handleOpen }: SettingsProps) => 
     >
       <CustomDialogTitle
         icon={<SettingsRounded />}
-        title="Settings"
-        subTitle="Manage Your settings and preferences"
+        title={t("Settings")}
+        subTitle={t("Manage Your settings and preferences")}
         onClose={handleDialogClose}
         removeDivider
       />
@@ -281,7 +288,7 @@ export const SettingsDialog = ({ open, onClose, handleOpen }: SettingsProps) => 
           value={tabValue}
           onChange={handleTabChange}
           variant="scrollable"
-          aria-label="Settings tabs"
+          aria-label={t("Settings tabs")}
           sx={{
             borderRight: 1,
             borderColor: "divider",
