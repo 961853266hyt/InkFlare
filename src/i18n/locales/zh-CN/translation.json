@@ -10,5 +10,14 @@
   "Settings tabs": "设置标签",
   "Show a badge on the PWA icon to indicate the number of not done tasks.": "在 PWA 应用图标上显示角标，提示未完成任务的数量。",
   "Show Progress Bar": "显示进度条",
-  "This feature requires the app to be installed as a PWA and supported by your browser.": "此功能需要将应用安装为 PWA，且你的浏览器需支持该功能。"
+  "This feature requires the app to be installed as a PWA and supported by your browser.": "此功能需要将应用安装为 PWA，且你的浏览器需支持该功能。",
+  "Appearance": "外观",
+  "General": "通用",
+  "General Settings": "通用设置",
+  "Emoji": "表情",
+  "Emoji Settings": "表情设置",
+  "Shortcuts": "快捷键",
+  "Keyboard Shortcuts": "键盘快捷键",
+  "About": "关于",
+  "About This App": "关于本应用"
 }

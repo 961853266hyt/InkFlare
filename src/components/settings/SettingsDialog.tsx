@@ -3,7 +3,6 @@ import {
   InfoRounded,
   KeyboardCommandKeyRounded,
   PaletteRounded,
-  RecordVoiceOverRounded,
   SettingsRounded,
 } from "@mui/icons-material";
 import {
@@ -64,12 +63,12 @@ const settingsTabs: {
     icon: <EmojiEmotionsRounded />,
     Component: lazy(() => import("./tabs/EmojiTab")),
   },
-  {
-    label: "Read Aloud",
-    heading: "Read Aloud Settings",
-    icon: <RecordVoiceOverRounded />,
-    Component: lazy(() => import("./tabs/ReadAloudTab")),
-  },
+  // {
+  //   label: "Read Aloud",
+  //   heading: "Read Aloud Settings",
+  //   icon: <RecordVoiceOverRounded />,
+  //   Component: lazy(() => import("./tabs/ReadAloudTab")),
+  // },
   {
     label: "Shortcuts",
     heading: "Keyboard Shortcuts",
@@ -175,7 +174,7 @@ export const SettingsDialog = ({ open, onClose, handleOpen }: SettingsProps) => 
         setTabValue(0);
       }
     }
-  }, [onClose]);
+  }, [onClose, t]);
 
   const handleHashOpen = useCallback(() => {
     if (window.location.hash.startsWith("#settings")) {

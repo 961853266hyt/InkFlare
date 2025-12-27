@@ -10,5 +10,14 @@
   "Settings tabs": "Settings tabs",
   "Show a badge on the PWA icon to indicate the number of not done tasks.": "Show a badge on the PWA icon to indicate the number of not done tasks.",
   "Show Progress Bar": "Show Progress Bar",
-  "This feature requires the app to be installed as a PWA and supported by your browser.": "This feature requires the app to be installed as a PWA and supported by your browser."
+  "This feature requires the app to be installed as a PWA and supported by your browser.": "This feature requires the app to be installed as a PWA and supported by your browser.",
+  "Appearance": "Appearance",
+  "General": "General",
+  "General Settings": "General Settings",
+  "Emoji": "Emoji",
+  "Emoji Settings": "Emoji Settings",
+  "Shortcuts": "Shortcuts",
+  "Keyboard Shortcuts": "Keyboard Shortcuts",
+  "About": "About",
+  "About This App": "About This App"
 }
