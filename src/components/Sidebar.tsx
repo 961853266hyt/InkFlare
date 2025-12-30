@@ -1,18 +1,14 @@
-import { keyframes, useTheme } from "@emotion/react";
+import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 import {
   AccessTimeFilledRounded,
   AddRounded,
-  AdjustRounded,
-  BugReportRounded,
   CategoryRounded,
   DeleteForeverRounded,
   DownloadDoneRounded,
   Favorite,
-  FavoriteRounded,
   FiberManualRecord,
   GetAppRounded,
-  GitHub,
   InstallDesktopRounded,
   InstallMobileRounded,
   IosShareRounded,
@@ -20,7 +16,6 @@ import {
   PhoneIphoneRounded,
   PhonelinkRounded,
   SettingsRounded,
-  StarRounded,
   TaskAltRounded,
   ThumbUpRounded,
 } from "@mui/icons-material";
@@ -37,12 +32,8 @@ import {
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CustomDialogTitle, LogoutDialog, SettingsDialog } from ".";
-import bmcLogoLight from "../assets/bmc-logo-light.svg";
-import bmcLogo from "../assets/bmc-logo.svg";
 import { defaultUser } from "../constants/defaultUser";
 import { UserContext } from "../contexts/UserContext";
-import { fetchBMCInfo } from "../services/bmcApi";
-import { fetchGitHubInfo } from "../services/githubApi";
 import { DialogBtn, UserAvatar, pulseAnimation, reduceMotion, ring } from "../styles";
 import { ColorPalette } from "../theme/themeConfig";
 import {
@@ -60,39 +51,7 @@ export const ProfileSidebar = () => {
   const open = Boolean(anchorEl);
   const [openLogoutDialog, setOpenLogoutDialog] = useState<boolean>(false);
   const [openSettings, setOpenSettings] = useState<boolean>(false);
-
-  const [stars, setStars] = useState<number | null>(null);
-  const [lastUpdate, setLastUpdate] = useState<string | null>(null);
-  const [issuesCount, setIssuesCount] = useState<number | null>(null);
-
-  const [bmcSupporters, setBmcSupporters] = useState<number | null>(null);
-
-  const theme = useTheme();
   const n = useNavigate();
-
-  useEffect(() => {
-    const fetchRepoInfo: () => Promise<void> = async () => {
-      const { repoData, branchData } = await fetchGitHubInfo();
-      setStars(repoData.stargazers_count);
-      setLastUpdate(branchData.commit.commit.committer.date);
-      setIssuesCount(repoData.open_issues_count);
-    };
-
-    const fetchBMC: () => Promise<void> = async () => {
-      // Fetch data from the Buy Me a Coffee API
-      const { supportersCount } = await fetchBMCInfo();
-      // In case BMC api fails
-      if (supportersCount > 0) {
-        setBmcSupporters(supportersCount);
-      } else {
-        console.error("No BMC supporters found.");
-      }
-    };
-
-    fetchBMC();
-    fetchRepoInfo();
-  }, []);
-
   const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
 
   useEffect(() => {
@@ -314,54 +273,54 @@ export const ProfileSidebar = () => {
 
         <StyledDivider />
 
-        <MenuLink to="https://github.com/maciekt07/TodoApp">
-          <StyledMenuItem translate="no">
-            <GitHub className="GitHubIcon" /> &nbsp; Github{" "}
-            {stars && (
-              <Tooltip title={`${stars} stars on Github`}>
-                <MenuLabel clr="#ff9d00">
-                  <span>
-                    <StarRounded style={{ fontSize: "18px" }} />
-                    {stars}
-                  </span>
-                </MenuLabel>
-              </Tooltip>
-            )}
-          </StyledMenuItem>
-        </MenuLink>
+        {/*<MenuLink to="https://github.com/maciekt07/TodoApp">*/}
+        {/*  <StyledMenuItem translate="no">*/}
+        {/*    <GitHub className="GitHubIcon" /> &nbsp; Github{" "}*/}
+        {/*    {stars && (*/}
+        {/*      <Tooltip title={`${stars} stars on Github`}>*/}
+        {/*        <MenuLabel clr="#ff9d00">*/}
+        {/*          <span>*/}
+        {/*            <StarRounded style={{ fontSize: "18px" }} />*/}
+        {/*            {stars}*/}
+        {/*          </span>*/}
+        {/*        </MenuLabel>*/}
+        {/*      </Tooltip>*/}
+        {/*    )}*/}
+        {/*  </StyledMenuItem>*/}
+        {/*</MenuLink>*/}
 
-        <MenuLink to="https://github.com/maciekt07/TodoApp/issues/new">
-          <StyledMenuItem>
-            <BugReportRounded className="BugReportRoundedIcon" /> &nbsp; Report Issue{" "}
-            {Boolean(issuesCount || issuesCount === 0) && (
-              <Tooltip title={`${issuesCount} open issues`}>
-                <MenuLabel clr="#3bb61c">
-                  <span>
-                    <AdjustRounded style={{ fontSize: "18px" }} />
-                    {issuesCount}
-                  </span>
-                </MenuLabel>
-              </Tooltip>
-            )}
-          </StyledMenuItem>
-        </MenuLink>
+        {/*<MenuLink to="https://github.com/maciekt07/TodoApp/issues/new">*/}
+        {/*  <StyledMenuItem>*/}
+        {/*    <BugReportRounded className="BugReportRoundedIcon" /> &nbsp; Report Issue{" "}*/}
+        {/*    {Boolean(issuesCount || issuesCount === 0) && (*/}
+        {/*      <Tooltip title={`${issuesCount} open issues`}>*/}
+        {/*        <MenuLabel clr="#3bb61c">*/}
+        {/*          <span>*/}
+        {/*            <AdjustRounded style={{ fontSize: "18px" }} />*/}
+        {/*            {issuesCount}*/}
+        {/*          </span>*/}
+        {/*        </MenuLabel>*/}
+        {/*      </Tooltip>*/}
+        {/*    )}*/}
+        {/*  </StyledMenuItem>*/}
+        {/*</MenuLink>*/}
 
-        <MenuLink to="https://www.buymeacoffee.com/maciekt07">
-          <StyledMenuItem className="bmcMenu">
-            <BmcIcon className="bmc-icon" src={theme.darkmode ? bmcLogoLight : bmcLogo} /> &nbsp;
-            Buy me a coffee{" "}
-            {bmcSupporters && (
-              <Tooltip title={`${bmcSupporters} supporters on Buy me a coffee`}>
-                <MenuLabel clr="#f93c58">
-                  <span>
-                    <FavoriteRounded style={{ fontSize: "16px" }} />
-                    {bmcSupporters}
-                  </span>
-                </MenuLabel>
-              </Tooltip>
-            )}
-          </StyledMenuItem>
-        </MenuLink>
+        {/*<MenuLink to="https://www.buymeacoffee.com/maciekt07">*/}
+        {/*  <StyledMenuItem className="bmcMenu">*/}
+        {/*    <BmcIcon className="bmc-icon" src={theme.darkmode ? bmcLogoLight : bmcLogo} /> &nbsp;*/}
+        {/*    Buy me a coffee{" "}*/}
+        {/*    {bmcSupporters && (*/}
+        {/*      <Tooltip title={`${bmcSupporters} supporters on Buy me a coffee`}>*/}
+        {/*        <MenuLabel clr="#f93c58">*/}
+        {/*          <span>*/}
+        {/*            <FavoriteRounded style={{ fontSize: "16px" }} />*/}
+        {/*            {bmcSupporters}*/}
+        {/*          </span>*/}
+        {/*        </MenuLabel>*/}
+        {/*      </Tooltip>*/}
+        {/*    )}*/}
+        {/*  </StyledMenuItem>*/}
+        {/*</MenuLink>*/}
 
         <StyledDivider />
 
@@ -453,19 +412,6 @@ export const ProfileSidebar = () => {
             >
               maciekt07
             </a>
-          </CreditsContainer>
-          <CreditsContainer>
-            {lastUpdate && (
-              <Tooltip title={timeAgo(new Date(lastUpdate))}>
-                <span>
-                  Last update:{" "}
-                  {new Intl.DateTimeFormat(navigator.language, {
-                    dateStyle: "long",
-                    timeStyle: "medium",
-                  }).format(new Date(lastUpdate))}
-                </span>
-              </Tooltip>
-            )}
           </CreditsContainer>
         </ProfileOptionsBottom>
       </StyledSwipeableDrawer>
@@ -724,12 +670,6 @@ const LogoText = styled.h2`
   & span {
     color: #7764e8;
   }
-`;
-
-const BmcIcon = styled.img`
-  width: 1em;
-  height: 1em;
-  font-size: 1.5rem;
 `;
 
 const ProfileOptionsBottom = styled.div`
