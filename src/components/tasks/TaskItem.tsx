@@ -31,6 +31,7 @@ import { TaskContext } from "../../contexts/TaskContext";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { getCommissionFeeString } from "../../utils/taskUtils.ts";
+import { useTranslation } from "react-i18next";
 
 interface TaskItemProps {
   task: Task;
@@ -94,6 +95,8 @@ export const TaskItem = memo(
         onSelect?.(taskId);
       }
     };
+
+    const { t } = useTranslation();
 
     if (!task) {
       return null;
@@ -163,12 +166,11 @@ export const TaskItem = memo(
         <TaskInfo translate="no">
           {task.pinned && (
             <Pinned translate="yes">
-              <PushPinRounded fontSize="small" /> &nbsp; Pinned
+              <PushPinRounded fontSize="small" /> &nbsp; {t("taskDetails.pinned")}
             </Pinned>
           )}
           <TaskHeader>
             <TaskName done={task.done}>{textHighlighter(task.name)}</TaskName>
-
             <Tooltip
               title={
                 moveMode && enableMoveMode
@@ -227,7 +229,7 @@ export const TaskItem = memo(
 
           {task.sharedBy && (
             <SharedByContainer translate="yes">
-              <Link /> Shared by{" "}
+              <Link /> {t("taskDetails.sharedBy")}{" "}
               <span translate={task.sharedBy === "User" ? "yes" : "no"}>{task.sharedBy}</span>
             </SharedByContainer>
           )}

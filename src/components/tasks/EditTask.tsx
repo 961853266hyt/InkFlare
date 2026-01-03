@@ -12,6 +12,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { useContext, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ColorPicker, CustomDialogTitle, CustomEmojiPicker } from "..";
 import { DESCRIPTION_MAX_LENGTH, TASK_NAME_MAX_LENGTH } from "../../constants";
 import { UserContext } from "../../contexts/UserContext";
@@ -24,8 +25,6 @@ import { CategorySelect } from "../CategorySelect";
 import set from "lodash/set";
 import { isValidAmountNumber } from "../../utils/taskUtils.ts";
 
-const DEFAULT_EDIT_TASK_SUBTITLE = "Edit the details of the task.";
-
 interface EditTaskProps {
   open: boolean;
   task?: Task;
@@ -35,10 +34,11 @@ interface EditTaskProps {
 export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
   const { user, setUser } = useContext(UserContext);
   const { settings } = user;
+  const { t } = useTranslation();
   const [editedTask, setEditedTask] = useState<Task | undefined>(task);
   const [emoji, setEmoji] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
-  const [editLastSaveLabel, setEditLastSaveLabel] = useState<string>(DEFAULT_EDIT_TASK_SUBTITLE);
+  const [editLastSaveLabel, setEditLastSaveLabel] = useState<string>(t("editTask.subtitle"));
 
   const theme = useTheme();
 
@@ -73,12 +73,15 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
     setSelectedCategories(task?.category as Category[]);
     if (task?.lastSave) {
       setEditLastSaveLabel(
-        `Last edited ${timeAgo(new Date(task.lastSave))} • ${formatDate(new Date(task.lastSave))}`,
+        t("editTask.lastEdited", {
+          time: timeAgo(new Date(task.lastSave)),
+          date: formatDate(new Date(task.lastSave)),
+        }),
       );
     } else {
-      setEditLastSaveLabel(DEFAULT_EDIT_TASK_SUBTITLE);
+      setEditLastSaveLabel(t("editTask.subtitle"));
     }
-  }, [task]);
+  }, [task, t]);
 
   // Event handler for input changes in the form fields.
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,7 +122,7 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
       onClose();
       showToast(
         <div>
-          Task <b translate="no">{editedTask.name}</b> updated.
+          {t("editTask.taskSaved")} <b translate="no">{editedTask.name}</b>
         </div>,
       );
     }
@@ -141,7 +144,9 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (JSON.stringify(editedTask) !== JSON.stringify(task) && open) {
-        const message = "You have unsaved changes. Are you sure you want to leave?";
+        const message = t("editTask.beforeUnload", {
+          defaultValue: "You have unsaved changes. Are you sure you want to leave?",
+        });
         e.returnValue = message;
         return message;
       }
@@ -152,7 +157,7 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [editedTask, open, task]);
+  }, [editedTask, open, task, t]);
 
   return (
     <Dialog
@@ -171,7 +176,7 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
       }}
     >
       <CustomDialogTitle
-        title="Edit Task"
+        title={t("editTask.title")}
         subTitle={editLastSaveLabel}
         icon={<EditCalendarRounded />}
         onClose={onClose}
@@ -186,7 +191,7 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
           type="task"
         />
         <StyledInput
-          label="Name"
+          label={t("addTask.taskName")}
           name="name"
           autoComplete="off"
           value={editedTask?.name || ""}
@@ -195,15 +200,18 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
           helperText={
             editedTask?.name
               ? editedTask?.name.length === 0
-                ? "Name is required"
+                ? t("validation.required", { field: t("addTask.taskName") })
                 : editedTask?.name.length > TASK_NAME_MAX_LENGTH
-                  ? `Name is too long (maximum ${TASK_NAME_MAX_LENGTH} characters)`
+                  ? t("validation.maxLength", {
+                      field: t("addTask.taskName"),
+                      max: TASK_NAME_MAX_LENGTH,
+                    })
                   : `${editedTask?.name?.length}/${TASK_NAME_MAX_LENGTH}`
-              : "Name is required"
+              : t("validation.required", { field: t("addTask.taskName") })
           }
         />
         <StyledInput
-          label="Description"
+          label={t("addTask.description")}
           name="description"
           autoComplete="off"
           value={editedTask?.description || ""}
@@ -216,7 +224,10 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
             editedTask?.description === "" || editedTask?.description === undefined
               ? undefined
               : descriptionError
-                ? `Description is too long (maximum ${DESCRIPTION_MAX_LENGTH} characters)`
+                ? t("validation.maxLength", {
+                    field: t("addTask.description"),
+                    max: DESCRIPTION_MAX_LENGTH,
+                  })
                 : `${editedTask?.description?.length}/${DESCRIPTION_MAX_LENGTH}`
           }
         />
@@ -258,7 +269,7 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
         />
 
         <StyledInput
-          label="Deadline date"
+          label={t("addTask.deadline")}
           name="deadline"
           type="datetime-local"
           value={
@@ -274,7 +285,7 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
             input: {
               startAdornment: editedTask?.deadline ? (
                 <InputAdornment position="start">
-                  <Tooltip title="Clear">
+                  <Tooltip title={t("common.close")}>
                     <IconButton
                       color="error"
                       onClick={() => {
@@ -324,11 +335,12 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
                 color: color,
               }));
             }}
+            label={t("addTask.color")}
           />
         </div>
       </DialogContent>
       <DialogActions>
-        <DialogBtn onClick={handleCancel}>Cancel</DialogBtn>
+        <DialogBtn onClick={handleCancel}>{t("common.cancel")}</DialogBtn>
         <DialogBtn
           onClick={handleSave}
           color="primary"
@@ -341,7 +353,7 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
             JSON.stringify(editedTask) === JSON.stringify(task)
           }
         >
-          <SaveRounded /> &nbsp; Save
+          <SaveRounded /> &nbsp; {t("common.save")}
         </DialogBtn>
       </DialogActions>
     </Dialog>
