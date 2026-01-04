@@ -24,7 +24,6 @@ import CustomSwitch from "../CustomSwitch";
 import { useSystemTheme } from "../../../hooks/useSystemTheme";
 import { Themes } from "../../../theme/createTheme";
 import { ColorElement } from "../../../styles";
-import { useTranslation } from "react-i18next";
 
 const darkModeOptions: OptionItem<DarkModeOptions>[] = [
   {
@@ -75,7 +74,6 @@ export default function AppearanceTab() {
   );
 
   const systemTheme = useSystemTheme();
-  const { t } = useTranslation();
 
   // update local state when user settings change (e.g. after P2P sync)
   useEffect(() => {
@@ -92,7 +90,7 @@ export default function AppearanceTab() {
 
   return (
     <>
-      <SectionHeading>{t("Dark Mode Options")}</SectionHeading>
+      <SectionHeading>Dark Mode Options</SectionHeading>
       <CustomRadioGroup
         options={darkModeOptions}
         value={darkModeValue}
@@ -104,7 +102,7 @@ export default function AppearanceTab() {
           }));
         }}
       />
-      <SectionHeading>{t("Theme Selection")}</SectionHeading>
+      <SectionHeading>Theme Selection</SectionHeading>
       <StyledSelect
         value={user.theme}
         onChange={handleAppThemeChange}
@@ -129,9 +127,9 @@ export default function AppearanceTab() {
           </StyledMenuItem>
         ))}
       </StyledSelect>
-      <SectionHeading>{t("Reduce Motion Options")}</SectionHeading>
+      <SectionHeading>Reduce Motion Options</SectionHeading>
       <SectionDescription>
-        {t("Reduce animations and transitions for a more stable experience.")}
+        Reduce animations and transitions for a more stable experience.
       </SectionDescription>
       <CustomRadioGroup
         options={reduceMotionOptions}
@@ -149,8 +147,8 @@ export default function AppearanceTab() {
       />
       <CustomSwitch
         settingKey="enableGlow"
-        header={t("Enable Glow Effect")}
-        text={t("Add a soft glow to tasks for better visibility.")}
+        header="Enable Glow Effect"
+        text="Add a soft glow to tasks for better visibility."
       />
     </>
   );
