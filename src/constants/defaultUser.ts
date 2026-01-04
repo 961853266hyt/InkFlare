@@ -16,7 +16,6 @@ export const defaultUser: User = {
   theme: "system",
   darkmode: "auto",
   settings: {
-    language: (navigator.language.startsWith("zh") ? "zh-CN" : "en") as "en" | "zh-CN",
     enableCategories: true,
     doneToBottom: false,
     enableGlow: true,

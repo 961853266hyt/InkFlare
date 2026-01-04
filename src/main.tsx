@@ -10,7 +10,6 @@ import { updatePrompt } from "./utils/updatePrompt.tsx";
 import { CircularProgress } from "@mui/material";
 import toast from "react-hot-toast";
 import { TaskProvider } from "./contexts/TaskProvider.tsx";
-import "./i18n/i18n.ts";
 
 // initialize ntc colors
 initColors(ORIGINAL_COLORS);
