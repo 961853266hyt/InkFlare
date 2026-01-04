@@ -12,8 +12,6 @@ export const LanguageSelect = () => {
 
   const handleLanguageChange = (event: SelectChangeEvent<unknown>) => {
     const newLanguage = event.target.value as string;
-
-    // Update user settings
     setUser((prevUser) => ({
       ...prevUser,
       settings: {
@@ -21,8 +19,6 @@ export const LanguageSelect = () => {
         language: newLanguage,
       },
     }));
-
-    // Change language in i18n
     i18n.changeLanguage(newLanguage);
   };
 
