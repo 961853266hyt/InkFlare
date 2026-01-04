@@ -1,5 +1,4 @@
 import ReactDOM from "react-dom/client";
-import i18n from "./i18n.ts";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { initColors } from "ntc-ts";
@@ -11,7 +10,8 @@ import { updatePrompt } from "./utils/updatePrompt.tsx";
 import { CircularProgress } from "@mui/material";
 import toast from "react-hot-toast";
 import { TaskProvider } from "./contexts/TaskProvider.tsx";
-import { I18nextProvider } from "react-i18next";
+import "./i18n/i18n.ts";
+
 // initialize ntc colors
 initColors(ORIGINAL_COLORS);
 
@@ -59,13 +59,11 @@ navigator.serviceWorker?.addEventListener("controllerchange", () => {
 });
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <I18nextProvider i18n={i18n}>
-    <BrowserRouter>
-      <UserContextProvider>
-        <TaskProvider>
-          <App />
-        </TaskProvider>
-      </UserContextProvider>
-    </BrowserRouter>
-  </I18nextProvider>,
+  <BrowserRouter>
+    <UserContextProvider>
+      <TaskProvider>
+        <App />
+      </TaskProvider>
+    </UserContextProvider>
+  </BrowserRouter>,
 );
