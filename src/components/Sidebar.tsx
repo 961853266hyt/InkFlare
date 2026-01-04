@@ -1,18 +1,13 @@
-import { keyframes, useTheme } from "@emotion/react";
+import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 import {
   AccessTimeFilledRounded,
   AddRounded,
-  AdjustRounded,
-  BugReportRounded,
   CategoryRounded,
   DeleteForeverRounded,
   DownloadDoneRounded,
-  Favorite,
-  FavoriteRounded,
   FiberManualRecord,
   GetAppRounded,
-  GitHub,
   InstallDesktopRounded,
   InstallMobileRounded,
   IosShareRounded,
@@ -20,7 +15,6 @@ import {
   PhoneIphoneRounded,
   PhonelinkRounded,
   SettingsRounded,
-  StarRounded,
   TaskAltRounded,
   ThumbUpRounded,
 } from "@mui/icons-material";
@@ -38,12 +32,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { CustomDialogTitle, LogoutDialog, SettingsDialog } from ".";
-import bmcLogoLight from "../assets/bmc-logo-light.svg";
-import bmcLogo from "../assets/bmc-logo.svg";
 import { defaultUser } from "../constants/defaultUser";
 import { UserContext } from "../contexts/UserContext";
-import { fetchBMCInfo } from "../services/bmcApi";
-import { fetchGitHubInfo } from "../services/githubApi";
 import { DialogBtn, UserAvatar, pulseAnimation, reduceMotion, ring } from "../styles";
 import { ColorPalette } from "../theme/themeConfig";
 import {
@@ -62,39 +52,7 @@ export const ProfileSidebar = () => {
   const open = Boolean(anchorEl);
   const [openLogoutDialog, setOpenLogoutDialog] = useState<boolean>(false);
   const [openSettings, setOpenSettings] = useState<boolean>(false);
-
-  const [stars, setStars] = useState<number | null>(null);
-  const [lastUpdate, setLastUpdate] = useState<string | null>(null);
-  const [issuesCount, setIssuesCount] = useState<number | null>(null);
-
-  const [bmcSupporters, setBmcSupporters] = useState<number | null>(null);
-
-  const theme = useTheme();
   const n = useNavigate();
-
-  useEffect(() => {
-    const fetchRepoInfo: () => Promise<void> = async () => {
-      const { repoData, branchData } = await fetchGitHubInfo();
-      setStars(repoData.stargazers_count);
-      setLastUpdate(branchData.commit.commit.committer.date);
-      setIssuesCount(repoData.open_issues_count);
-    };
-
-    const fetchBMC: () => Promise<void> = async () => {
-      // Fetch data from the Buy Me a Coffee API
-      const { supportersCount } = await fetchBMCInfo();
-      // In case BMC api fails
-      if (supportersCount > 0) {
-        setBmcSupporters(supportersCount);
-      } else {
-        console.error("No BMC supporters found.");
-      }
-    };
-
-    fetchBMC();
-    fetchRepoInfo();
-  }, []);
-
   const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
 
   useEffect(() => {
@@ -320,57 +278,6 @@ export const ProfileSidebar = () => {
 
         <StyledDivider />
 
-        <MenuLink to="https://github.com/maciekt07/TodoApp">
-          <StyledMenuItem translate="no">
-            <GitHub className="GitHubIcon" /> &nbsp; {t("sidebar.github")}{" "}
-            {stars && (
-              <Tooltip title={t("sidebar.starsOnGithub", { count: stars })}>
-                <MenuLabel clr="#ff9d00">
-                  <span>
-                    <StarRounded style={{ fontSize: "18px" }} />
-                    {stars}
-                  </span>
-                </MenuLabel>
-              </Tooltip>
-            )}
-          </StyledMenuItem>
-        </MenuLink>
-
-        <MenuLink to="https://github.com/maciekt07/TodoApp/issues/new">
-          <StyledMenuItem>
-            <BugReportRounded className="BugReportRoundedIcon" /> &nbsp; {t("sidebar.reportIssue")}{" "}
-            {Boolean(issuesCount || issuesCount === 0) && (
-              <Tooltip title={t("sidebar.openIssues", { count: issuesCount || 0 })}>
-                <MenuLabel clr="#3bb61c">
-                  <span>
-                    <AdjustRounded style={{ fontSize: "18px" }} />
-                    {issuesCount}
-                  </span>
-                </MenuLabel>
-              </Tooltip>
-            )}
-          </StyledMenuItem>
-        </MenuLink>
-
-        <MenuLink to="https://www.buymeacoffee.com/maciekt07">
-          <StyledMenuItem className="bmcMenu">
-            <BmcIcon className="bmc-icon" src={theme.darkmode ? bmcLogoLight : bmcLogo} /> &nbsp;
-            {t("sidebar.buyMeACoffee")}{" "}
-            {bmcSupporters && (
-              <Tooltip title={t("sidebar.supporters", { count: bmcSupporters })}>
-                <MenuLabel clr="#f93c58">
-                  <span>
-                    <FavoriteRounded style={{ fontSize: "16px" }} />
-                    {bmcSupporters}
-                  </span>
-                </MenuLabel>
-              </Tooltip>
-            )}
-          </StyledMenuItem>
-        </MenuLink>
-
-        <StyledDivider />
-
         {supportsPWA && !isAppInstalled && (
           <StyledMenuItem tabIndex={0} onClick={installPWA}>
             {systemInfo.os === "Android" ? (
@@ -445,36 +352,6 @@ export const ProfileSidebar = () => {
               {(name === null || name === "") && profilePicture === null && <PulseMenuLabel />}
             </ProfileMenuItem>
           </MenuLink>
-
-          <StyledDivider />
-
-          <CreditsContainer translate="no">
-            <span style={{ display: "flex", alignItems: "center" }}>
-              {t("sidebar.madeWith")} &nbsp;
-              <Favorite sx={{ fontSize: "14px" }} />
-            </span>
-            <span style={{ marginLeft: "6px", marginRight: "4px" }}>{t("sidebar.by")}</span>
-            <a
-              style={{ textDecoration: "none", color: "inherit" }}
-              href="https://github.com/maciekt07"
-            >
-              maciekt07
-            </a>
-          </CreditsContainer>
-          <CreditsContainer>
-            {lastUpdate && (
-              <Tooltip title={timeAgo(new Date(lastUpdate))}>
-                <span>
-                  {t("sidebar.lastUpdate", {
-                    date: new Intl.DateTimeFormat(navigator.language, {
-                      dateStyle: "long",
-                      timeStyle: "medium",
-                    }).format(new Date(lastUpdate)),
-                  })}
-                </span>
-              </Tooltip>
-            )}
-          </CreditsContainer>
         </ProfileOptionsBottom>
       </StyledSwipeableDrawer>
 
@@ -731,12 +608,6 @@ const LogoText = styled.h2`
   }
 `;
 
-const BmcIcon = styled.img`
-  width: 1em;
-  height: 1em;
-  font-size: 1.5rem;
-`;
-
 const ProfileOptionsBottom = styled.div`
   margin-top: auto;
   margin-bottom: ${window.matchMedia("(display-mode: standalone)").matches &&
@@ -746,17 +617,4 @@ const ProfileOptionsBottom = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-`;
-
-const CreditsContainer = styled.div`
-  font-size: 12px;
-  margin: 0;
-  opacity: 0.8;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  & span {
-    backdrop-filter: none !important;
-  }
 `;
