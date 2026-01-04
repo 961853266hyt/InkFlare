@@ -10,7 +10,7 @@ const LanguageSwitch: React.FC = () => {
 
   const isZhCN = user.settings.language === "zh-CN";
 
-  const handleToggle = async () => {
+  const handleToggle = () => {
     const newLanguage: Language = isZhCN ? "en" : "zh-CN";
 
     const updatedSettings = {
@@ -19,7 +19,7 @@ const LanguageSwitch: React.FC = () => {
     };
     setUser((prev) => ({ ...prev, settings: updatedSettings }));
 
-    await i18n.changeLanguage(newLanguage);
+    i18n.changeLanguage(newLanguage);
     document.documentElement.lang = newLanguage;
   };
 
