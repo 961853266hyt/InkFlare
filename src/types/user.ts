@@ -101,6 +101,7 @@ export interface AppSettings {
   voiceVolume: number;
   sortOption: SortOption;
   reduceMotion: ReduceMotionOption;
+  language: string;
 }
 
 export type SortOption = "dateCreated" | "dueDate" | "alphabetical" | "custom";

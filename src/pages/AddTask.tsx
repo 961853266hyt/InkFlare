@@ -9,6 +9,7 @@ import { ColorPicker, TopBar, CustomEmojiPicker } from "../components";
 import { UserContext } from "../contexts/UserContext";
 import { useStorageState } from "../hooks/useStorageState";
 import { useTheme } from "@emotion/react";
+import { useTranslation } from "react-i18next";
 import { generateUUID, getFontColor, isDark, showToast } from "../utils";
 import { ColorPalette } from "../theme/themeConfig";
 import InputThemeProvider from "../contexts/InputThemeProvider";
@@ -17,6 +18,7 @@ import { useToasterStore } from "react-hot-toast";
 
 const AddTask = () => {
   const { user, setUser } = useContext(UserContext);
+  const { t } = useTranslation();
   const theme = useTheme();
   const [name, setName] = useStorageState<string>("", "name", "sessionStorage");
   const [emoji, setEmoji] = useStorageState<string | null>(null, "emoji", "sessionStorage");
@@ -47,7 +49,7 @@ const AddTask = () => {
   const { toasts } = useToasterStore();
 
   useEffect(() => {
-    document.title = "Todo App - Add Task";
+    document.title = `Todo App - ${t("addTask.title", { defaultValue: "Add Task" })}`;
   }, []);
 
   useEffect(() => {
@@ -151,7 +153,7 @@ const AddTask = () => {
 
   return (
     <>
-      <TopBar title="Add New Task" />
+      <TopBar title={t("addTask.title", { defaultValue: "Add Task" })} />
       <Container>
         <CustomEmojiPicker
           emoji={typeof emoji === "string" ? emoji : undefined}
@@ -163,9 +165,9 @@ const AddTask = () => {
         {/* fix for input colors */}
         <InputThemeProvider>
           <StyledInput
-            label="Task Name"
+            label={t("addTask.taskName", { defaultValue: "Task Name" })}
             name="name"
-            placeholder="Enter task name"
+            placeholder={t("addTask.taskNamePlaceholder", { defaultValue: "Enter task name" })}
             autoComplete="off"
             value={name}
             onChange={handleNameChange}
@@ -181,9 +183,11 @@ const AddTask = () => {
             }
           />
           <StyledInput
-            label="Task Description"
+            label={t("addTask.description", { defaultValue: "Description" })}
             name="name"
-            placeholder="Enter task description"
+            placeholder={t("addTask.descriptionPlaceholder", {
+              defaultValue: "Enter task description",
+            })}
             autoComplete="off"
             value={description}
             onChange={handleDescriptionChange}
@@ -236,9 +240,9 @@ const AddTask = () => {
             }}
           />
           <StyledInput
-            label="Task Deadline"
+            label={t("addTask.deadline", { defaultValue: "Deadline" })}
             name="name"
-            placeholder="Enter deadline date"
+            placeholder={t("addTask.deadlinePlaceholder", { defaultValue: "Enter deadline date" })}
             type="datetime-local"
             value={deadline}
             onChange={handleDeadlineChange}
@@ -290,7 +294,7 @@ const AddTask = () => {
             name.length > TASK_NAME_MAX_LENGTH || description.length > DESCRIPTION_MAX_LENGTH
           }
         >
-          Create Task
+          {t("common.addTask", { defaultValue: "Create Task" })}
         </AddTaskButton>
       </Container>
     </>
