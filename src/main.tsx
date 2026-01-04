@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import i18n from "./i18n/i18n.ts";
+import i18n from "./i18n.ts";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 import { initColors } from "ntc-ts";
