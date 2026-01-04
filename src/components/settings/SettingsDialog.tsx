@@ -297,7 +297,7 @@ export const SettingsDialog = ({ open, onClose, handleOpen }: SettingsProps) => 
           {settingsTabs.map((tab, index) => (
             <StyledTab
               icon={tab.icon}
-              label={t(tab.label)}
+              label={tab.label}
               key={index}
               {...a11yProps(index)}
               onClick={() => {
@@ -329,7 +329,7 @@ export const SettingsDialog = ({ open, onClose, handleOpen }: SettingsProps) => 
                       </Box>
                     }
                   >
-                    <TabHeading>{t(tab.heading ?? tab.label)}</TabHeading>
+                    <TabHeading>{tab.heading ?? tab.label}</TabHeading>
                     <tab.Component />
                   </Suspense>
                 )}
