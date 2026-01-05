@@ -119,6 +119,8 @@
     "category": "分类",
     "categoryPlaceholder": "选择分类",
     "deadline": "截止日期",
+    "platform": "接单平台",
+    "commissionType": "委托类型",
     "color": "颜色",
     "colorPlaceholder": "选择颜色",
     "emoji": "表情符号"

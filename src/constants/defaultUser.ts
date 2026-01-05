@@ -29,6 +29,30 @@ export const defaultUser: User = {
     reduceMotion: "system",
     language: "en",
   },
+  platformsPreset: [
+    {
+      id: "1",
+      name: "米画师",
+      type: "platform",
+    },
+    {
+      id: "2",
+      name: "VGen",
+      type: "platform",
+    },
+  ],
+  commissionTypesPreset: [
+    {
+      id: "1",
+      name: "立绘",
+      type: "commission-type",
+    },
+    {
+      id: "2",
+      name: "插画",
+      type: "commission-type",
+    },
+  ],
   categories: [
     {
       id: "857f0db6-43b2-43eb-8143-ec4e26472516",

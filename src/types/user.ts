@@ -32,6 +32,8 @@ export interface User {
   theme: "system" | (string & {});
   darkmode: DarkModeOptions;
   lastSyncedAt?: Date;
+  platformsPreset?: Platform[];
+  commissionTypesPreset?: CommissionType[];
 }
 
 /**
@@ -61,10 +63,21 @@ export interface Task {
    * extends task to commission
    */
   type?: "task" | "commission";
+  /**
+   * 接单平台
+   */
+  commissionPlatform?: Platform;
+  /**
+   * 业务类型
+   */
+  commissionType?: CommissionType;
   commissionFee?: Money;
   estimatedWorkingHour?: number;
   clientInfo?: { name: string; email?: string };
 }
+
+export type Platform = { id: string; name: string; type: "platform" };
+export type CommissionType = { id: string; name: string; type: "commission-type" };
 
 export type Money = {
   amount: number;

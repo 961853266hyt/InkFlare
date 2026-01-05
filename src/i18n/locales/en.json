@@ -115,6 +115,8 @@
     "taskName": "Task Name",
     "description": "Description",
     "category": "Category",
+    "platform": "Platform",
+    "commissionType": "Commission Type",
     "deadline": "Deadline",
     "color": "Color",
     "emoji": "Emoji"

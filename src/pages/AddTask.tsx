@@ -15,6 +15,7 @@ import { ColorPalette } from "../theme/themeConfig";
 import InputThemeProvider from "../contexts/InputThemeProvider";
 import { CategorySelect } from "../components/CategorySelect";
 import { useToasterStore } from "react-hot-toast";
+import { ItemSelector } from "../components/commission/PlatformSelect.tsx";
 
 const AddTask = () => {
   const { user, setUser } = useContext(UserContext);
@@ -42,6 +43,12 @@ const AddTask = () => {
     "categories",
     "sessionStorage",
   );
+
+  // const [selectedPlatforms, setSelectedPlatforms] = useStorageState<Platform[]>(
+  //   [],
+  //   "platforms",
+  //   "sessionStorage",
+  // );
 
   const [isDeadlineFocused, setIsDeadlineFocused] = useState<boolean>(false);
 
@@ -267,7 +274,6 @@ const AddTask = () => {
               },
             }}
           />
-
           {user.settings.enableCategories !== undefined && user.settings.enableCategories && (
             <div style={{ marginBottom: "14px" }}>
               <br />
@@ -279,6 +285,17 @@ const AddTask = () => {
               />
             </div>
           )}
+          {/*TODO: geli handle empty presets*/}
+          <ItemSelector
+            width="400px"
+            presets={user.commissionTypesPreset!}
+            title={t("Commission Type")}
+          />
+          <ItemSelector
+            width="400px"
+            presets={user.platformsPreset!}
+            title={t("Commission Platform")}
+          />
         </InputThemeProvider>
         <ColorPicker
           color={color}
