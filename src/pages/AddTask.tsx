@@ -44,11 +44,17 @@ const AddTask = () => {
     "sessionStorage",
   );
 
-  // const [selectedPlatforms, setSelectedPlatforms] = useStorageState<Platform[]>(
-  //   [],
-  //   "platforms",
-  //   "sessionStorage",
-  // );
+  const [selectedPlatformId, setSelectedPlatformId] = useStorageState<string>(
+    user.platformsPreset?.[0].id ?? "1",
+    "commissionPlatforms",
+    "sessionStorage",
+  );
+
+  const [selectedCommissionTypeId, setSelectedCommissionTypeId] = useStorageState<string>(
+    user.commissionTypesPreset?.[0].id ?? "1",
+    "commissionTypes",
+    "sessionStorage",
+  );
 
   const [isDeadlineFocused, setIsDeadlineFocused] = useState<boolean>(false);
 
@@ -136,6 +142,8 @@ const AddTask = () => {
       date: new Date(),
       deadline: deadline !== "" ? new Date(deadline) : undefined,
       category: selectedCategories ? selectedCategories : [],
+      commissionPlatform: user.platformsPreset?.find((p) => p.id === selectedPlatformId),
+      commissionType: user.commissionTypesPreset?.find((c) => c.id === selectedCommissionTypeId),
     };
 
     setUser((prevUser) => ({
@@ -285,16 +293,19 @@ const AddTask = () => {
               />
             </div>
           )}
-          {/*TODO: geli handle empty presets*/}
           <ItemSelector
             width="400px"
             presets={user.commissionTypesPreset!}
             title={t("Commission Type")}
+            value={selectedCommissionTypeId}
+            onChange={(id) => setSelectedCommissionTypeId(id)}
           />
           <ItemSelector
             width="400px"
             presets={user.platformsPreset!}
             title={t("Commission Platform")}
+            value={selectedPlatformId}
+            onChange={(id) => setSelectedPlatformId(id)}
           />
         </InputThemeProvider>
         <ColorPicker
