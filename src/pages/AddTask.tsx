@@ -295,14 +295,14 @@ const AddTask = () => {
           )}
           <ItemSelector
             width="400px"
-            presets={user.commissionTypesPreset!}
+            presets={user.commissionTypesPreset}
             title={t("addTask.commissionType")}
             value={selectedCommissionTypeId}
             onChange={(id) => setSelectedCommissionTypeId(id)}
           />
           <ItemSelector
             width="400px"
-            presets={user.platformsPreset!}
+            presets={user.platformsPreset}
             title={t("addTask.platform")}
             value={selectedPlatformId}
             onChange={(id) => setSelectedPlatformId(id)}

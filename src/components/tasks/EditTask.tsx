@@ -24,6 +24,7 @@ import { ColorPalette } from "../../theme/themeConfig";
 import { CategorySelect } from "../CategorySelect";
 import set from "lodash/set";
 import { isValidAmountNumber } from "../../utils/taskUtils.ts";
+import { ItemSelector } from "../commission/ItemSelector.tsx";
 
 interface EditTaskProps {
   open: boolean;
@@ -110,6 +111,8 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
             commissionFee: editedTask.commissionFee || undefined,
             deadline: editedTask.deadline || undefined,
             category: editedTask.category || undefined,
+            commissionPlatform: editedTask.commissionPlatform || undefined,
+            commissionType: editedTask.commissionType || undefined,
             lastSave: new Date(),
           };
         }
@@ -210,6 +213,30 @@ export const EditTask = ({ open, task, onClose }: EditTaskProps) => {
               : t("validation.required", { field: t("addTask.taskName") })
           }
         />
+        <ItemSelector
+          // name="commissionPlatform"
+          presets={user.platformsPreset}
+          title={t("addTask.platform")}
+          value={editedTask?.commissionPlatform?.id ?? "1"}
+          onChange={(id) => {
+            setEditedTask((prevTask) => ({
+              ...(prevTask as Task),
+              commissionPlatform: user.platformsPreset?.find((item) => item.id === id),
+            }));
+          }}
+        />
+        <ItemSelector
+          presets={user.commissionTypesPreset}
+          title={t("addTask.commissionType")}
+          value={editedTask?.commissionType?.id ?? "1"}
+          onChange={(id) => {
+            setEditedTask((prevTask) => ({
+              ...(prevTask as Task),
+              commissionType: user.commissionTypesPreset?.find((item) => item.id === id),
+            }));
+          }}
+        />
+
         <StyledInput
           label={t("addTask.description")}
           name="description"

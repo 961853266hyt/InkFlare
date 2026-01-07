@@ -2,9 +2,10 @@ import { SectionHeading, StyledMenuItem, StyledSelect } from "../settings/settin
 import { SelectChangeEvent } from "@mui/material";
 
 export interface ItemSelectorProps<T extends { id: string; name: string }> {
-  presets: T[];
+  presets: T[] | undefined;
   title: string;
   width?: string;
+  name?: string;
   value: string;
   onChange: (id: string) => void;
 }
@@ -18,7 +19,9 @@ export const ItemSelector = <T extends { id: string; name: string }>({
   width,
   value,
   onChange,
+  name,
 }: ItemSelectorProps<T>) => {
+  const hasPresetItems = presets && presets.length > 0;
   const handleChange = (event: SelectChangeEvent<unknown>) => {
     if (event.target.value) {
       // @ts-expect-error geli
@@ -28,12 +31,23 @@ export const ItemSelector = <T extends { id: string; name: string }>({
   return (
     <>
       <SectionHeading>{title}</SectionHeading>
-      <StyledSelect sx={{ width: width ?? "100%" }} value={value} onChange={handleChange}>
-        {presets.map((item) => (
-          <StyledMenuItem key={item.id} value={item.id}>
-            {item.name}
+      <StyledSelect
+        name={name}
+        sx={{ width: width ?? "100%" }}
+        value={value}
+        onChange={handleChange}
+      >
+        {!hasPresetItems && (
+          <StyledMenuItem disabled value="">
+            No items available
           </StyledMenuItem>
-        ))}
+        )}
+        {hasPresetItems &&
+          presets.map((item) => (
+            <StyledMenuItem key={item.id} value={item.id}>
+              {item.name}
+            </StyledMenuItem>
+          ))}
       </StyledSelect>
     </>
   );
