@@ -219,9 +219,9 @@ const AddTask = () => {
             }
           />
           <StyledInput
-            label="Commission Fee"
+            label={t("addTask.commissionFee")}
             name="name"
-            placeholder="Enter commission fee"
+            placeholder={t("addTask.Enter commission fee")}
             autoComplete="off"
             value={commissionFee.amount}
             onChange={handleAmountChange}
@@ -296,14 +296,14 @@ const AddTask = () => {
           <ItemSelector
             width="400px"
             presets={user.commissionTypesPreset!}
-            title={t("Commission Type")}
+            title={t("addTask.commissionType")}
             value={selectedCommissionTypeId}
             onChange={(id) => setSelectedCommissionTypeId(id)}
           />
           <ItemSelector
             width="400px"
             presets={user.platformsPreset!}
-            title={t("Commission Platform")}
+            title={t("addTask.platform")}
             value={selectedPlatformId}
             onChange={(id) => setSelectedPlatformId(id)}
           />

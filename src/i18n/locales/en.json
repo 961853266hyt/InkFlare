@@ -119,7 +119,8 @@
     "commissionType": "Commission Type",
     "deadline": "Deadline",
     "color": "Color",
-    "emoji": "Emoji"
+    "emoji": "Emoji",
+    "Enter commission fee": "Enter commission fee"
   },
   "taskMenu": {
     "markAsDone": "Mark as done",
