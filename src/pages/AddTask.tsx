@@ -15,7 +15,7 @@ import { ColorPalette } from "../theme/themeConfig";
 import InputThemeProvider from "../contexts/InputThemeProvider";
 import { CategorySelect } from "../components/CategorySelect";
 import { useToasterStore } from "react-hot-toast";
-import { ItemSelector } from "../components/commission/PlatformSelect.tsx";
+import { ItemSelector } from "../components/commission/ItemSelector.tsx";
 
 const AddTask = () => {
   const { user, setUser } = useContext(UserContext);
