@@ -55,6 +55,9 @@ export const BottomNav = (): JSX.Element | null => {
         case "/user":
           setValue(4);
           break;
+        case "/presets":
+          setValue(5);
+          break;
         case "/":
           setValue(0);
           break;
@@ -95,9 +98,15 @@ export const BottomNav = (): JSX.Element | null => {
             </Badge>
           }
         />
+        {/*<NavigationButton*/}
+        {/*  onClick={() => n("/categories")}*/}
+        {/*  label="Categories"*/}
+        {/*  icon={<CategoryRounded sx={{ fontSize: smallIconSize }} />}*/}
+        {/*  disabled={!settings.enableCategories}*/}
+        {/*/>*/}
         <NavigationButton
-          onClick={() => n("/categories")}
-          label="Categories"
+          onClick={() => n("/presets")}
+          label="Presets"
           icon={<CategoryRounded sx={{ fontSize: smallIconSize }} />}
           disabled={!settings.enableCategories}
         />
