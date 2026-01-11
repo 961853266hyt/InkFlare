@@ -1,7 +1,10 @@
-import { SectionHeading } from "../components/settings/settings.styled.tsx";
+import { TabHeading } from "../components/settings/settings.styled.tsx";
 
 import { AddRounded } from "@mui/icons-material";
 import { Button } from "@mui/material";
+import { TopBar } from "../components";
+// import { ManagementHeader } from "../styles";
+import { useTranslation } from "react-i18next";
 
 // const data: Platform =
 
@@ -16,9 +19,12 @@ const AddView = () => {
 };
 
 const Presets = () => {
+  const { t } = useTranslation();
   return (
     <div>
-      <SectionHeading>接单平台</SectionHeading>
+      <TopBar title={t("common.presets")} />
+      {/*<ManagementHeader>{t("presets.header")}</ManagementHeader>*/}
+      <TabHeading>常用平台</TabHeading>
       <AddView />
     </div>
   );

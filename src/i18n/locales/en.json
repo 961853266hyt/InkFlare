@@ -17,6 +17,9 @@
     "gotIt": "Got it",
     "presets": "Presets"
   },
+  "presets": {
+    "header": "请设置您的预设"
+  },
   "greetings": {
     "morning": "Good morning",
     "afternoon": "Good afternoon",
