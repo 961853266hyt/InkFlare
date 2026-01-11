@@ -76,7 +76,7 @@ export interface Task {
   clientInfo?: { name: string; email?: string };
 }
 
-export type Platform = { id: string; name: string; type: "platform" };
+export type Platform = { id: string; name: string; type: "platform"; icon?: string };
 export type CommissionType = { id: string; name: string; type: "commission-type" };
 
 export type Money = {

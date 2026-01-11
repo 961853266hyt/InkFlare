@@ -1,44 +1,64 @@
 import { TabHeading } from "../components/settings/settings.styled.tsx";
 
-import { AddRounded } from "@mui/icons-material";
+import { AddRounded, SaveRounded } from "@mui/icons-material";
 import {
+  Avatar,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Stack,
 } from "@mui/material";
 import { TopBar } from "../components";
 // import { ManagementHeader } from "../styles";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../contexts/UserContext.tsx";
+import { Platform } from "../types/user.ts";
+import { DialogBtn } from "../styles";
 
 // const data: Platform =
 interface CreatePlatformViewProps {
   isOpen: boolean;
   onClose: () => void;
   handleCloseButtonClick?: () => void;
+  data?: Platform;
 }
 
 const CreatePlatformView = ({
   onClose,
   isOpen,
   handleCloseButtonClick,
+  data,
 }: CreatePlatformViewProps) => {
+  const { t } = useTranslation();
+  if (data) {
+    return null;
+  }
+  const handleSaveButtonClick = () => {
+    //TODO: geli Save logic here
+  };
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      // maxWidth="sm" // 可以设置最大宽度
-      // fullWidth    // 配合 maxWidth 使用
-    >
+    <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>提示</DialogTitle>
       <DialogContent>
         <DialogContentText>这是一个默认在屏幕正中央的弹窗。</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCloseButtonClick}>关闭</Button>
+        <DialogBtn onClick={handleCloseButtonClick}>
+          {t("common.cancel", { defaultValue: "Cancel" })}
+        </DialogBtn>
+        <DialogBtn
+          // disabled={
+          //   profilePictureURL.length > PROFILE_PICTURE_MAX_LENGTH ||
+          //   !profilePictureURL.startsWith("https://")
+          // }
+          onClick={handleSaveButtonClick}
+        >
+          <SaveRounded /> &nbsp; Save
+        </DialogBtn>
       </DialogActions>
     </Dialog>
   );
@@ -47,7 +67,8 @@ const CreatePlatformView = ({
 interface AddViewProps {
   onClose: () => void;
 }
-const AddView = ({ onClose }: AddViewProps) => {
+
+const AddPlatformPresetView = ({ onClose }: AddViewProps) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
@@ -68,15 +89,45 @@ const AddView = ({ onClose }: AddViewProps) => {
   );
 };
 
+interface PlatformPresetItemViewProps {
+  data: Platform;
+}
+
+const PlatformPresetItemView = ({ data }: PlatformPresetItemViewProps) => {
+  return (
+    // <UserAvatar
+    //   // onClick={handleOpenImageDialog}
+    //   src={data.icon}
+    //   // hasimage={data.icon != undefined}
+    //   hasimage={true}
+    //   style={{ cursor: "pointer" }}
+    //   size="80px"
+    // >
+    //   {/*{data.name[0].toUpperCase()}*/}
+    // </UserAvatar>
+    <Avatar
+      translate={"no"}
+      slotProps={{ img: { loading: "lazy" } }}
+      src={data.icon}
+      sx={{ width: 80, height: 80 }}
+      variant={"rounded"}
+    />
+  );
+};
+
 const Presets = () => {
   const { t } = useTranslation();
-
+  const { user } = useContext(UserContext);
   return (
     <div>
       <TopBar title={t("common.presets")} />
       <TabHeading>常用平台</TabHeading>
-
-      <AddView onClose={() => {}} />
+      <Stack direction="row" spacing={2} justifyContent="start" alignItems="center">
+        {user.platformsPreset?.map((platform: Platform) => (
+          <PlatformPresetItemView key={platform.id} data={platform} />
+        ))}
+        <AddPlatformPresetView onClose={() => {}} />
+      </Stack>
     </div>
   );
 };
