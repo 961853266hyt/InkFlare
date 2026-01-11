@@ -14,7 +14,8 @@
     "done": "完成",
     "undo": "撤销",
     "close": "关闭",
-    "gotIt": "知道了"
+    "gotIt": "知道了",
+    "presets": "预设"
   },
   "greetings": {
     "morning": "早上好",

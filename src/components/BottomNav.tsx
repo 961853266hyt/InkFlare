@@ -1,6 +1,6 @@
 import {
   AddRounded,
-  CategoryRounded,
+  DashboardCustomizeRounded,
   GetAppRounded,
   PersonRounded,
   TaskAlt,
@@ -20,6 +20,7 @@ import { UserContext } from "../contexts/UserContext";
 import { useResponsiveDisplay } from "../hooks/useResponsiveDisplay";
 import { pulseAnimation, slideInBottom } from "../styles";
 import { getFontColor } from "../utils";
+import { useTranslation } from "react-i18next";
 
 /**
  * Component for rendering the bottom navigation bar.
@@ -33,7 +34,7 @@ export const BottomNav = (): JSX.Element | null => {
   const n = useNavigate();
   const isMobile = useResponsiveDisplay();
   const location = useLocation();
-
+  const { t } = useTranslation();
   const smallIconSize = "29px";
 
   // useEffect hook to set the active button based on the current route
@@ -87,7 +88,7 @@ export const BottomNav = (): JSX.Element | null => {
       >
         <NavigationButton
           onClick={() => n("/")}
-          label="Tasks"
+          label={t("common.tasks")}
           icon={
             <Badge
               color="primary"
@@ -106,8 +107,8 @@ export const BottomNav = (): JSX.Element | null => {
         {/*/>*/}
         <NavigationButton
           onClick={() => n("/presets")}
-          label="Presets"
-          icon={<CategoryRounded sx={{ fontSize: smallIconSize }} />}
+          label={t("common.presets")}
+          icon={<DashboardCustomizeRounded sx={{ fontSize: smallIconSize }} />}
           disabled={!settings.enableCategories}
         />
 
@@ -126,12 +127,12 @@ export const BottomNav = (): JSX.Element | null => {
         />
         <NavigationButton
           onClick={() => n("transfer")}
-          label="Transfer"
+          label={t("sidebar.transfer")}
           icon={<GetAppRounded sx={{ fontSize: smallIconSize }} />}
         />
         <NavigationButton
           onClick={() => n("user")}
-          label="Profile"
+          label={t("common.profile")}
           icon={<PersonRounded sx={{ fontSize: smallIconSize }} />}
         />
       </StyledBottomNavigation>

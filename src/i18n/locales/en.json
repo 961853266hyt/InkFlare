@@ -14,7 +14,8 @@
     "done": "Done",
     "undo": "Undo",
     "close": "Close",
-    "gotIt": "Got it"
+    "gotIt": "Got it",
+    "presets": "Presets"
   },
   "greetings": {
     "morning": "Good morning",

@@ -17,6 +17,7 @@ import {
   SettingsRounded,
   TaskAltRounded,
   ThumbUpRounded,
+  DashboardCustomizeRounded,
 } from "@mui/icons-material";
 import {
   Dialog,
@@ -245,6 +246,12 @@ export const ProfileSidebar = () => {
             </StyledMenuItem>
           </MenuLink>
         )}
+
+        <MenuLink to="/presets">
+          <StyledMenuItem onClick={handleClose}>
+            <DashboardCustomizeRounded /> &nbsp; {t("common.presets")}
+          </StyledMenuItem>
+        </MenuLink>
 
         <MenuLink to="/purge">
           <StyledMenuItem onClick={handleClose}>
