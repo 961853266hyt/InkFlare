@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Avatar,
@@ -10,8 +10,11 @@ import {
   DialogTitle,
   Stack,
   Box,
+  TextField,
+  IconButton,
+  Typography,
 } from "@mui/material";
-import { AddRounded, SaveRounded } from "@mui/icons-material";
+import { AddRounded, SaveRounded, ImageRounded, CloseRounded } from "@mui/icons-material";
 
 import { TopBar } from "../components";
 import { TabHeading } from "../components/settings/settings.styled.tsx";
@@ -67,16 +70,97 @@ const CreatePlatformDialog = ({
   initialData,
 }: CreatePlatformDialogProps) => {
   const { t } = useTranslation();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    iconUrl: "",
+  });
+  const [iconPreview, setIconPreview] = useState<string>("");
+  const [errors, setErrors] = useState({
+    name: false,
+    iconUrl: false,
+  });
+
+  // Initialize form data when dialog opens or initialData changes
+  useEffect(() => {
+    if (open) {
+      setFormData({
+        name: initialData?.name || "",
+        iconUrl: initialData?.icon || "",
+      });
+      setIconPreview(initialData?.icon || "");
+      setErrors({ name: false, iconUrl: false });
+    }
+  }, [open, initialData]);
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, name: value }));
+    setErrors((prev) => ({ ...prev, name: false }));
+  };
+
+  const handleIconUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, iconUrl: value }));
+    setIconPreview(value);
+    setErrors((prev) => ({ ...prev, iconUrl: false }));
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Check if file is an image
+      if (!file.type.startsWith("image/")) {
+        setErrors((prev) => ({ ...prev, iconUrl: true }));
+        return;
+      }
+
+      // Create object URL for preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        setFormData((prev) => ({ ...prev, iconUrl: result }));
+        setIconPreview(result);
+        setErrors((prev) => ({ ...prev, iconUrl: false }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUploadButtonClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleClearIcon = () => {
+    setFormData((prev) => ({ ...prev, iconUrl: "" }));
+    setIconPreview("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {
+      name: !formData.name.trim(),
+      iconUrl: false,
+    };
+    setErrors(newErrors);
+    return !newErrors.name;
+  };
 
   const handleSave = () => {
-    // TODO: Implement platform creation/editing logic
-    // This should validate and save the platform data
+    if (!validateForm()) {
+      return;
+    }
+
     onSave({
       id: initialData?.id || `platform-${Date.now()}`,
-      name: initialData?.name || "New Platform",
+      name: formData.name.trim(),
       type: "platform",
-      icon: initialData?.icon,
+      icon: formData.iconUrl || undefined,
     });
+
     onClose();
   };
 
@@ -88,12 +172,105 @@ const CreatePlatformDialog = ({
           : t("presets.createPlatform", { defaultValue: "Create Platform" })}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
+        <DialogContentText sx={{ mb: 2 }}>
           {t("presets.platformDialogDescription", {
             defaultValue: "Configure your platform preset settings.",
           })}
         </DialogContentText>
-        {/* TODO: Add form fields for platform name, icon, etc. */}
+
+        <Stack spacing={3} sx={{ mt: 2 }}>
+          {/* Platform Name Input */}
+          <TextField
+            autoFocus
+            required
+            fullWidth
+            label={t("presets.platformName", { defaultValue: "Platform Name" })}
+            placeholder={t("presets.platformNamePlaceholder", {
+              defaultValue: "e.g., Twitter, YouTube, Instagram",
+            })}
+            value={formData.name}
+            onChange={handleNameChange}
+            error={errors.name}
+            helperText={
+              errors.name
+                ? t("presets.platformNameRequired", {
+                    defaultValue: "Platform name is required",
+                  })
+                : ""
+            }
+          />
+
+          {/* Icon Section */}
+          <Box>
+            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              {t("presets.platformIcon", { defaultValue: "Platform Icon" })}
+            </Typography>
+
+            {/* Icon Preview */}
+            {iconPreview && (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 2,
+                  mb: 2,
+                }}
+              >
+                <Avatar src={iconPreview} variant="rounded" sx={{ width: 80, height: 80 }} />
+                <IconButton
+                  onClick={handleClearIcon}
+                  size="small"
+                  color="error"
+                  sx={{
+                    backgroundColor: "action.hover",
+                    "&:hover": {
+                      backgroundColor: "action.selected",
+                    },
+                  }}
+                >
+                  <CloseRounded />
+                </IconButton>
+              </Box>
+            )}
+
+            {/* Icon URL Input */}
+            <TextField
+              fullWidth
+              label={t("presets.iconUrl", { defaultValue: "Icon URL" })}
+              placeholder="https://example.com/icon.png"
+              value={formData.iconUrl}
+              onChange={handleIconUrlChange}
+              error={errors.iconUrl}
+              helperText={
+                errors.iconUrl
+                  ? t("presets.invalidImage", {
+                      defaultValue: "Please provide a valid image",
+                    })
+                  : t("presets.iconUrlHelper", {
+                      defaultValue: "Enter an image URL or upload a file below",
+                    })
+              }
+              sx={{ mb: 1 }}
+            />
+
+            {/* File Upload Button */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleFileUpload}
+            />
+            <Button
+              variant="outlined"
+              startIcon={<ImageRounded />}
+              onClick={handleUploadButtonClick}
+              fullWidth
+            >
+              {t("presets.uploadIcon", { defaultValue: "Upload Icon" })}
+            </Button>
+          </Box>
+        </Stack>
       </DialogContent>
       <DialogActions>
         <DialogBtn onClick={onClose}>{t("common.cancel", { defaultValue: "Cancel" })}</DialogBtn>
