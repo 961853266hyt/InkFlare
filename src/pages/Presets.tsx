@@ -1,6 +1,5 @@
-import { TabHeading } from "../components/settings/settings.styled.tsx";
-
-import { AddRounded, SaveRounded } from "@mui/icons-material";
+import { useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Avatar,
   Button,
@@ -10,125 +9,213 @@ import {
   DialogContentText,
   DialogTitle,
   Stack,
+  Box,
 } from "@mui/material";
-import { TopBar } from "../components";
-// import { ManagementHeader } from "../styles";
-import { useTranslation } from "react-i18next";
-import { useContext, useState } from "react";
-import { UserContext } from "../contexts/UserContext.tsx";
-import { Platform } from "../types/user.ts";
-import { DialogBtn } from "../styles";
+import { AddRounded, SaveRounded } from "@mui/icons-material";
 
-// const data: Platform =
-interface CreatePlatformViewProps {
-  isOpen: boolean;
-  onClose: () => void;
-  handleCloseButtonClick?: () => void;
-  data?: Platform;
+import { TopBar } from "../components";
+import { TabHeading } from "../components/settings/settings.styled.tsx";
+import { DialogBtn } from "../styles";
+import { UserContext } from "../contexts/UserContext.tsx";
+import { Platform, User } from "../types/user.ts";
+
+// ==================== Sub Components ====================
+
+interface PlatformPresetItemProps {
+  platform: Platform;
+  onClick?: (platform: Platform) => void;
 }
 
-const CreatePlatformView = ({
-  onClose,
-  isOpen,
-  handleCloseButtonClick,
-  data,
-}: CreatePlatformViewProps) => {
-  const { t } = useTranslation();
-  if (data) {
-    return null;
-  }
-  const handleSaveButtonClick = () => {
-    //TODO: geli Save logic here
+const PlatformPresetItem = ({ platform, onClick }: PlatformPresetItemProps) => {
+  const handleClick = () => {
+    onClick?.(platform);
   };
+
   return (
-    <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>提示</DialogTitle>
+    <Avatar
+      translate="no"
+      slotProps={{ img: { loading: "lazy" } }}
+      src={platform.icon}
+      sx={{
+        width: 80,
+        height: 80,
+        cursor: onClick ? "pointer" : "default",
+        transition: "transform 0.2s",
+        "&:hover": onClick
+          ? {
+              transform: "scale(1.05)",
+            }
+          : {},
+      }}
+      variant="rounded"
+      onClick={handleClick}
+    />
+  );
+};
+
+interface CreatePlatformDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onSave: (platform: Platform) => void;
+  initialData?: Platform;
+}
+
+const CreatePlatformDialog = ({
+  open,
+  onClose,
+  onSave,
+  initialData,
+}: CreatePlatformDialogProps) => {
+  const { t } = useTranslation();
+
+  const handleSave = () => {
+    // TODO: Implement platform creation/editing logic
+    // This should validate and save the platform data
+    onSave({
+      id: initialData?.id || `platform-${Date.now()}`,
+      name: initialData?.name || "New Platform",
+      type: "platform",
+      icon: initialData?.icon,
+    });
+    onClose();
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>
+        {initialData
+          ? t("presets.editPlatform", { defaultValue: "Edit Platform" })
+          : t("presets.createPlatform", { defaultValue: "Create Platform" })}
+      </DialogTitle>
       <DialogContent>
-        <DialogContentText>这是一个默认在屏幕正中央的弹窗。</DialogContentText>
+        <DialogContentText>
+          {t("presets.platformDialogDescription", {
+            defaultValue: "Configure your platform preset settings.",
+          })}
+        </DialogContentText>
+        {/* TODO: Add form fields for platform name, icon, etc. */}
       </DialogContent>
       <DialogActions>
-        <DialogBtn onClick={handleCloseButtonClick}>
-          {t("common.cancel", { defaultValue: "Cancel" })}
-        </DialogBtn>
-        <DialogBtn
-          // disabled={
-          //   profilePictureURL.length > PROFILE_PICTURE_MAX_LENGTH ||
-          //   !profilePictureURL.startsWith("https://")
-          // }
-          onClick={handleSaveButtonClick}
-        >
-          <SaveRounded /> &nbsp; Save
+        <DialogBtn onClick={onClose}>{t("common.cancel", { defaultValue: "Cancel" })}</DialogBtn>
+        <DialogBtn onClick={handleSave}>
+          <SaveRounded sx={{ mr: 0.5 }} />
+          {t("common.save", { defaultValue: "Save" })}
         </DialogBtn>
       </DialogActions>
     </Dialog>
   );
 };
 
-interface AddViewProps {
-  onClose: () => void;
+interface AddPlatformButtonProps {
+  onClick: () => void;
 }
 
-const AddPlatformPresetView = ({ onClose }: AddViewProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+const AddPlatformButton = ({ onClick }: AddPlatformButtonProps) => {
   return (
-    <div>
-      <CreatePlatformView
-        onClose={onClose}
-        isOpen={isOpen}
-        handleCloseButtonClick={() => setIsOpen(false)}
-      />
-      <Button
-        variant="outlined"
-        sx={{ height: "80", width: "80", mt: 2 }}
-        color="primary"
-        onClick={() => setIsOpen(true)}
-      >
-        <AddRounded style={{ fontSize: "44px" }} />
-      </Button>
-    </div>
+    <Button
+      variant="outlined"
+      sx={{
+        height: "80px",
+        width: "80px",
+        minWidth: "80px",
+        borderRadius: 2,
+        borderStyle: "dashed",
+        "&:hover": {
+          borderStyle: "dashed",
+          transform: "scale(1.05)",
+        },
+        transition: "transform 0.2s",
+      }}
+      color="primary"
+      onClick={onClick}
+    >
+      <AddRounded sx={{ fontSize: "44px" }} />
+    </Button>
   );
 };
 
-interface PlatformPresetItemViewProps {
-  data: Platform;
-}
-
-const PlatformPresetItemView = ({ data }: PlatformPresetItemViewProps) => {
-  return (
-    // <UserAvatar
-    //   // onClick={handleOpenImageDialog}
-    //   src={data.icon}
-    //   // hasimage={data.icon != undefined}
-    //   hasimage={true}
-    //   style={{ cursor: "pointer" }}
-    //   size="80px"
-    // >
-    //   {/*{data.name[0].toUpperCase()}*/}
-    // </UserAvatar>
-    <Avatar
-      translate={"no"}
-      slotProps={{ img: { loading: "lazy" } }}
-      src={data.icon}
-      sx={{ width: 80, height: 80 }}
-      variant={"rounded"}
-    />
-  );
-};
+// ==================== Main Component ====================
 
 const Presets = () => {
   const { t } = useTranslation();
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingPlatform, setEditingPlatform] = useState<Platform | undefined>(undefined);
+
+  const handleAddPlatform = () => {
+    setEditingPlatform(undefined);
+    setIsDialogOpen(true);
+  };
+
+  const handleEditPlatform = (platform: Platform) => {
+    setEditingPlatform(platform);
+    setIsDialogOpen(true);
+  };
+
+  const handleSavePlatform = (platform: Platform) => {
+    setUser((prevUser: User) => {
+      const platforms = prevUser.platformsPreset || [];
+
+      // Check if editing existing platform
+      const existingIndex = platforms.findIndex((p) => p.id === platform.id);
+
+      const updatedPlatforms =
+        existingIndex >= 0
+          ? platforms.map((p, index) => (index === existingIndex ? platform : p))
+          : [...platforms, platform];
+
+      return {
+        ...prevUser,
+        platformsPreset: updatedPlatforms,
+      };
+    });
+
+    setIsDialogOpen(false);
+    setEditingPlatform(undefined);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setEditingPlatform(undefined);
+  };
+
   return (
-    <div>
-      <TopBar title={t("common.presets")} />
-      <TabHeading>常用平台</TabHeading>
-      <Stack direction="row" spacing={2} justifyContent="start" alignItems="center">
-        {user.platformsPreset?.map((platform: Platform) => (
-          <PlatformPresetItemView key={platform.id} data={platform} />
-        ))}
-        <AddPlatformPresetView onClose={() => {}} />
-      </Stack>
-    </div>
+    <Box>
+      <TopBar title={t("common.presets", { defaultValue: "Presets" })} />
+
+      <Box sx={{ p: 3 }}>
+        <TabHeading>
+          {t("presets.platformSection", { defaultValue: "Platform Presets" })}
+        </TabHeading>
+
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{
+            flexWrap: "wrap",
+            gap: 2,
+            mt: 2,
+          }}
+        >
+          {user.platformsPreset?.map((platform: Platform) => (
+            <PlatformPresetItem
+              key={platform.id}
+              platform={platform}
+              onClick={handleEditPlatform}
+            />
+          ))}
+          <AddPlatformButton onClick={handleAddPlatform} />
+        </Stack>
+      </Box>
+
+      <CreatePlatformDialog
+        open={isDialogOpen}
+        onClose={handleCloseDialog}
+        onSave={handleSavePlatform}
+        initialData={editingPlatform}
+      />
+    </Box>
   );
 };
 
