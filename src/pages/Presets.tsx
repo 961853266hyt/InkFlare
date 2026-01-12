@@ -34,6 +34,8 @@ const PlatformPresetItem = ({ platform, onClick }: PlatformPresetItemProps) => {
     onClick?.(platform);
   };
 
+  const firstLetter = platform.name?.[0]?.toUpperCase() || "?";
+
   return (
     <Avatar
       translate="no"
@@ -49,10 +51,14 @@ const PlatformPresetItem = ({ platform, onClick }: PlatformPresetItemProps) => {
               transform: "scale(1.05)",
             }
           : {},
+        fontSize: "2rem",
+        fontWeight: 600,
       }}
       variant="rounded"
       onClick={handleClick}
-    />
+    >
+      {!platform.icon && firstLetter}
+    </Avatar>
   );
 };
 
@@ -206,8 +212,8 @@ const CreatePlatformDialog = ({
               {t("presets.platformIcon", { defaultValue: "Platform Icon" })}
             </Typography>
 
-            {/* Icon Preview */}
-            {iconPreview && (
+            {/* Icon Preview - Always show when there's a name */}
+            {formData.name && (
               <Box
                 sx={{
                   display: "flex",
@@ -216,20 +222,33 @@ const CreatePlatformDialog = ({
                   mb: 2,
                 }}
               >
-                <Avatar src={iconPreview} variant="rounded" sx={{ width: 80, height: 80 }} />
-                <IconButton
-                  onClick={handleClearIcon}
-                  size="small"
-                  color="error"
+                <Avatar
+                  src={iconPreview}
+                  variant="rounded"
                   sx={{
-                    backgroundColor: "action.hover",
-                    "&:hover": {
-                      backgroundColor: "action.selected",
-                    },
+                    width: 80,
+                    height: 80,
+                    fontSize: "2rem",
+                    fontWeight: 600,
                   }}
                 >
-                  <CloseRounded />
-                </IconButton>
+                  {!iconPreview && formData.name[0]?.toUpperCase()}
+                </Avatar>
+                {iconPreview && (
+                  <IconButton
+                    onClick={handleClearIcon}
+                    size="small"
+                    color="error"
+                    sx={{
+                      backgroundColor: "action.hover",
+                      "&:hover": {
+                        backgroundColor: "action.selected",
+                      },
+                    }}
+                  >
+                    <CloseRounded />
+                  </IconButton>
+                )}
               </Box>
             )}
 
