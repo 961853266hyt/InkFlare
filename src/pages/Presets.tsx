@@ -14,7 +14,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { AddRounded, SaveRounded, ImageRounded, CloseRounded } from "@mui/icons-material";
+import { AddRounded, SaveRounded, ImageRounded, DeleteRounded } from "@mui/icons-material";
 
 import { TopBar } from "../components";
 import { TabHeading } from "../components/settings/settings.styled.tsx";
@@ -222,33 +222,42 @@ const CreatePlatformDialog = ({
                   mb: 2,
                 }}
               >
-                <Avatar
-                  src={iconPreview}
-                  variant="rounded"
-                  sx={{
-                    width: 80,
-                    height: 80,
-                    fontSize: "2rem",
-                    fontWeight: 600,
-                  }}
-                >
-                  {!iconPreview && formData.name[0]?.toUpperCase()}
-                </Avatar>
-                {iconPreview && (
-                  <IconButton
-                    onClick={handleClearIcon}
-                    size="small"
-                    color="error"
+                <Box sx={{ position: "relative" }}>
+                  <Avatar
+                    src={iconPreview}
+                    variant="rounded"
                     sx={{
-                      backgroundColor: "action.hover",
-                      "&:hover": {
-                        backgroundColor: "action.selected",
-                      },
+                      width: 80,
+                      height: 80,
+                      fontSize: "2rem",
+                      fontWeight: 600,
                     }}
                   >
-                    <CloseRounded />
-                  </IconButton>
-                )}
+                    {!iconPreview && formData.name[0]?.toUpperCase()}
+                  </Avatar>
+                  {iconPreview && (
+                    <IconButton
+                      onClick={handleClearIcon}
+                      size="small"
+                      color="error"
+                      sx={{
+                        position: "absolute",
+                        top: -12,
+                        right: -12,
+                        // transform: "translate(-50%, -50%)",
+                        backgroundColor: "background.paper",
+                        opacity: 0.7,
+                        boxShadow: 1,
+                        "&:hover": {
+                          backgroundColor: "error.light",
+                          color: "error.contrastText",
+                        },
+                      }}
+                    >
+                      <DeleteRounded fontSize="small" />
+                    </IconButton>
+                  )}
+                </Box>
               </Box>
             )}
 
@@ -387,7 +396,6 @@ const Presets = () => {
 
         <Stack
           direction="row"
-          spacing={2}
           sx={{
             flexWrap: "wrap",
             gap: 2,

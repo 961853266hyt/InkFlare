@@ -34,13 +34,13 @@ export const defaultUser: User = {
       id: "1",
       name: "米画师",
       type: "platform",
-      icon: "src/assets/mihuashi.png",
+      icon: "public/presets/mihuashi.png",
     },
     {
       id: "2",
       name: "画加",
       type: "platform",
-      icon: "src/assets/huajia.png",
+      icon: "public/presets/huajia.png",
     },
   ],
   commissionTypesPreset: [
